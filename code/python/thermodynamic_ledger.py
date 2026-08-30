@@ -322,22 +322,58 @@ def run_design_day(
         Hourly thermal states over the design day.
     """
     results = []
-    for hour in range(hours):
-        # Simplified sinusoidal profiles
-        temp_c = (peak_temp_c - 8.0) + 8.0 * math.sin(math.pi * (hour - 6) / 12)
-        rh = peak_rh + (0.35 - peak_rh) * (1.0 - math.sin(math.pi * (hour - 6) / 12))
-        irradiance = max(0.0, peak_irradiance_wm2 * math.sin(math.pi * (hour - 6) / 12))
-
-        site = SiteConditions(
-            timestamp=f"design-day T+{hour:02d}h",
-            ambient_temp_c=temp_c,
-            relative_humidity=max(0.05, min(rh, 0.99)),
-            solar_irradiance_wm2=irradiance,
-            wind_speed_ms=2.0
-        )
+    site_conditions = generate_design_day_conditions(
+        peak_temp_c=peak_temp_c,
+        peak_rh=peak_rh,
+        peak_irradiance_wm2=peak_irradiance_wm2,
+        hours=hours
+    )
+    for site in site_conditions:
         state = calculate_thermal_state(site, dome)
         results.append(state)
     return results
+
+
+def generate_design_day_conditions(
+    peak_temp_c: float = 40.0,
+    peak_rh: float = 0.20,
+    peak_irradiance_wm2: float = 900.0,
+    hours: int = 24
+) -> list:
+    """
+    Generate hourly site conditions for a synthetic design day.
+
+    Parameters
+    ----------
+    peak_temp_c : float
+        Peak ambient dry-bulb temperature (°C). Default 40°C.
+    peak_rh : float
+        Minimum relative humidity (at peak temperature). Default 0.20.
+    peak_irradiance_wm2 : float
+        Peak solar irradiance (W/m²). Default 900 W/m².
+    hours : int
+        Number of hours to generate. Default 24.
+
+    Returns
+    -------
+    list[SiteConditions]
+        Hourly ambient conditions for simulation.
+    """
+    conditions = []
+    for hour in range(hours):
+        temp_c = (peak_temp_c - 8.0) + 8.0 * math.sin(math.pi * (hour - 6) / 12)
+        rh = peak_rh + (0.35 - peak_rh) * (1.0 - math.sin(math.pi * (hour - 6) / 12))
+        irradiance = max(0.0, peak_irradiance_wm2 * math.sin(math.pi * (hour - 6) / 12))
+        conditions.append(
+            SiteConditions(
+                timestamp=f"design-day T+{hour:02d}h",
+                ambient_temp_c=temp_c,
+                relative_humidity=max(0.05, min(rh, 0.99)),
+                solar_irradiance_wm2=irradiance,
+                wind_speed_ms=2.0
+            )
+        )
+    return conditions
 
 
 def print_summary(states: list) -> None:

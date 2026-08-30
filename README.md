@@ -78,12 +78,18 @@ docs/
 ```
 code/
 └── python/
-    └── thermodynamic_ledger.py   ← Thermal simulation: stack effect, evap cooling, Stirling
+    ├── thermodynamic_ledger.py   ← Thermal simulation: stack effect, evap cooling, Stirling
+    └── uplift_weak_nodes.py      ← Targets weakest hourly nodes to raise minimum performance
 ```
 
 Run the design-day simulation:
 ```bash
 python3 code/python/thermodynamic_ledger.py
+```
+
+Run weak-node uplift analysis:
+```bash
+python3 code/python/uplift_weak_nodes.py
 ```
 
 ---
