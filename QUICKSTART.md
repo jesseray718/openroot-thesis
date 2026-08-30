@@ -58,6 +58,12 @@ Outputs: cooling power, Stirling electrical output, water consumption, interior 
 
 Modify `DEFAULT_DOME` in the script to model your specific geometry.
 
+To uplift weak hours ("raise the floor"), run:
+```bash
+python3 code/python/uplift_weak_nodes.py
+```
+This identifies the weakest design-day nodes and applies passive-system uplift factors to those nodes.
+
 ---
 
 ## Step 4: Contribute
