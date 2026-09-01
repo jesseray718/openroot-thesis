@@ -119,3 +119,6 @@ This repository constitutes a **defensive publication** establishing prior art. 
 ## Quickstart
 
 New here? → **[QUICKSTART.md](QUICKSTART.md)**
+
+## Knowledge Integration
+See `docs/knowledge/`.
