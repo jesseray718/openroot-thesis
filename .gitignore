@@ -18,3 +18,12 @@ Thumbs.db
 # Logs & Sync temporaries
 *.log
 *.tmp
+
+# Local autonomous-loop state: evidence, SQLite, model proposals, and logs.
+audit_reports/*.db
+audit_reports/*.db-shm
+audit_reports/*.db-wal
+audit_reports/*.log
+audit_reports/audit_*.json
+audit_reports/mesh_state.json
+generated_proposals/
