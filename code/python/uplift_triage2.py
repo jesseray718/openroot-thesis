@@ -15,10 +15,10 @@ BASE_DIR = Path("/home/jesse/src/openroot-thesis/code/python")
 SIGNATURES = {"cool_w": 2439.8, "ach": 14.61, "stirl_w": 80.3, "t_int": 26.81}
 ALIASES = {
     "hour":     ["hour", "hr", "h", "t", "time", "local_hour"],
-    "cool_w":   ["cool_w", "cooling_w", "q_cool", "cool", "cooling", "clg_w", "evap_w"],
+    "cool_w":   ["cooling_power_w", "cool_w", "cooling_w", "q_cool", "cool", "cooling", "clg_w", "evap_w"],
     "ach":      ["ach", "air_changes", "air_changes_per_hour", "vent"],
-    "stirl_w":  ["stirl_w", "stirling_w", "stir_w", "stirl", "stirling", "power_w", "elec_w"],
-    "t_int":    ["t_int", "tint", "t_internal", "t_in", "interior_t", "temp_int"],
+    "stirl_w":  ["stirling_power_w", "stirl_w", "stirling_w", "stir_w", "stirl", "stirling", "power_w", "elec_w"],
+    "t_int":    ["interior_temp_estimate_c", "t_int", "tint", "t_internal", "t_in", "interior_t", "temp_int"],
 }
 
 def load(path: Path):
