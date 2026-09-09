@@ -38,7 +38,7 @@ def gh(*args, check=True):
 
 def score_repo(name, meta):
     """Deficit-first scoring — mirrors uplift_cycle.py. Higher = weaker node."""
-    default = meta.get("defaultBranch") or "main"
+    default = ((meta.get("defaultBranchRef") or {}).get("name")) or "main"
     has_ci = False
     try:
         wf = gh("api", f"/repos/{OWNER}/{name}/contents/.github/workflows", check=False)
@@ -63,7 +63,7 @@ def score_repo(name, meta):
     deficit += 50.0 if not has_ci else 0.0          # no CI = biggest deficit
     deficit += min(age_days / 30.0, 6.0)           # staleness
     deficit += 3.0 * issues                        # unresolved mass
-    deficit += 10.0 if not meta.get("license") else 0.0
+    deficit += 10.0 if not meta.get("licenseInfo") else 0.0
     return {"repo": name, "deficit": round(deficit, 1), "has_ci": bool(has_ci),
             "age_days": round(age_days, 0), "open_items": issues}
 
@@ -97,7 +97,7 @@ def uplift(repo):
 
 def main():
     repos = json.loads(gh("repo", "list", OWNER, "--limit", "100", "--json",
-                           "name,isArchived,isFork,defaultBranch,license,pushedAt"))
+                           "name,isArchived,isFork,defaultBranchRef,licenseInfo,pushedAt"))
     scored = []
     for meta in repos:
         if meta.get("isArchived") or meta.get("isFork"):
