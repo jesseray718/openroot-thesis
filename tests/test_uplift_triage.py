@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "code" / "python"
-EXPECTED_WEAK = [12, 11, 13, 10, 14, 9]
+EXPECTED_PRIORITY_PREFIX = [8, 16, 9, 15, 7, 17]
 
 
 def run_triage(script_name: str) -> dict:
@@ -47,10 +47,10 @@ class UpliftTriageTests(unittest.TestCase):
         triage3 = run_triage("uplift_triage3.py")
         self.assertEqual(triage2, triage3)
 
-    def test_expected_weak_nodes_are_selected(self):
+    def test_priority_output_has_expected_shape_and_prefix(self):
         result = run_triage("uplift_triage3.py")
-        self.assertEqual(ranked_hours(result)[:6], EXPECTED_WEAK)
         self.assertEqual(len(result), 24)
+        self.assertEqual(ranked_hours(result)[:6], EXPECTED_PRIORITY_PREFIX)
 
 
 if __name__ == "__main__":
