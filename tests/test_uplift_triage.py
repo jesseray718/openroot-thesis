@@ -33,11 +33,12 @@ def run_triage(script_name: str) -> dict:
         return json.loads((work / "uplift_priority.json").read_text(encoding="utf-8"))
 
 
-def pick(payload: dict, *names: str):
-    for name in names:
-        if name in payload:
-            return payload[name]
-    raise AssertionError(f"None of {names!r} found; keys={sorted(payload)!r}")
+def ranked_hours(payload):
+    if not isinstance(payload, list):
+        raise AssertionError(
+            f"Expected priority JSON list, got {type(payload).__name__}"
+        )
+    return [int(row["hour"]) for row in payload]
 
 
 class UpliftTriageTests(unittest.TestCase):
@@ -48,8 +49,8 @@ class UpliftTriageTests(unittest.TestCase):
 
     def test_expected_weak_nodes_are_selected(self):
         result = run_triage("uplift_triage3.py")
-        weak = pick(result, "weak_nodes", "next_weak_nodes", "selected_hours")
-        self.assertEqual(weak, EXPECTED_WEAK)
+        self.assertEqual(ranked_hours(result)[:6], EXPECTED_WEAK)
+        self.assertEqual(len(result), 24)
 
 
 if __name__ == "__main__":
