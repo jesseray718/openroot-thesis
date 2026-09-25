@@ -14,5 +14,5 @@ jobs:
     uses: jesseray718/.github/.github/workflows/python-quality.yml@main
     with:
       python-version: "3.12"
-      compile-path: "code/python"
+      compile-path: "."
       test-command: "python -m unittest discover -v"
